@@ -1,145 +1,71 @@
-📄 TextCNN: Multi-Channel CNN for Text Classification
-A deep learning implementation of a multi-channel Convolutional Neural Network (CNN) for text classification using Keras and TensorFlow. This project covers data preprocessing, tokenization, model definition, training, saving, and evaluation.
+# 📝 TextCNN: Multi-Channel CNN for Text Classification
 
-🚀 Features
-📥 Data Loading & Preprocessing
+---
 
-Load text files from directories
+## 🚀 Overview
 
-Clean text by removing punctuation, stopwords, and short tokens
+This project implements a **TextCNN** model for binary sentiment classification of text documents. It processes raw text data, cleans and tokenizes it, and trains a multi-channel CNN model to classify documents as positive or negative.
 
-Tokenize and pad sequences for model input
+---
 
-🧠 Multi-Channel CNN Architecture
+## 🛠️ Features
 
-Three parallel convolutional channels with different kernel sizes (4, 6, 8)
+* 📂 Load and preprocess text documents (cleaning, tokenization, stopword removal)
+* 📊 Multi-channel 1D CNN architecture with different kernel sizes (4, 6, 8)
+* 🔄 Train/test dataset handling with data serialization using pickle
+* ⚙️ Custom tokenizer creation and text encoding with padding
+* 🧠 Model training, saving, loading, and evaluation
+* 🔮 Sample prediction on new text input
 
-Embedding layers with 100-dimensional vectors
+---
 
-Dropout and max pooling for regularization and downsampling
+## 📦 Requirements
 
-Merged layers with dense layers for binary classification
+* Python 3.x
+* [nltk](https://www.nltk.org/) (for stopwords)
+* [Keras](https://keras.io/) with TensorFlow backend
+* numpy
+* matplotlib (optional, for model visualization)
+* pickle (Python standard library)
 
-📊 Training & Evaluation
+---
 
-Fit the model on training data with label arrays
+## ⚙️ Usage
 
-Evaluate on training and test datasets
+### 1. Prepare Data
 
-Save and load trained models for inference
+* Place your positive and negative text files in separate directories.
+* Update the directory paths in the script accordingly.
 
-🔍 Prediction on Sample Texts
+### 2. Preprocessing & Dataset Creation
 
-Tokenizer and padding applied on sample sentences
+```python
+# Load and clean documents, then save processed datasets
+negative_docs = process_docs('path/to/neg', is_train=True)
+positive_docs = process_docs('path/to/pos', is_train=True)
+trainX = negative_docs + positive_docs
+trainy = [0]*len(negative_docs) + [1]*len(positive_docs)
+save_dataset([trainX, trainy], 'train.pkl')
+```
+### RequirementsModel Architecture
 
-Model outputs predicted sentiment scores
+Three parallel 1D CNN channels with different kernel sizes (4, 6, 8)
 
-⚙️ Requirements
-Python 3.x
+Each channel has embedding, convolution, dropout, max-pooling, and flatten layers
 
-TensorFlow / Keras
+Outputs merged and passed through dense layers for binary classification
 
-NLTK (with stopwords downloaded)
-
-NumPy
-
-Matplotlib (for plot_model visualization)
-
-Pickle
-
-🧩 Usage Overview
-1. Data Preparation
-Load and clean raw text documents from folders
-
-Remove punctuation and stopwords
-
-Create training and test datasets
-
-Save processed datasets as pickle files
-
-2. Tokenization & Encoding
-Fit a tokenizer on the training data
-
-Encode and pad text sequences to fixed length
-
-3. Model Definition
-Define a multi-channel CNN with Keras Functional API
-
-Compile with binary cross-entropy loss and Adam optimizer
-
-Visualize the model architecture to multichannel.png
-
-4. Model Training
-Train for 10 epochs with batch size 16
-
-Save the trained model to disk
-
-5. Evaluation & Prediction
-Load the trained model
-
-Evaluate on training and test sets
-
-Predict sentiment for custom sample sentences
-
-📁 Project Structure
-graphql
-Copy
-Edit
-.
-├── data/
-│   ├── neg/              # Negative sentiment text files
-│   ├── pos/              # Positive sentiment text files
-│   └── train.pkl         # Preprocessed training dataset
-│   └── test.pkl          # Preprocessed testing dataset
-├── model/
-│   └── model.h5          # Trained CNN model file
-├── multichannel.png      # CNN architecture visualization
-└── TextCNN.ipynb         # Jupyter notebook with code
-⚠️ Notes
-Modify directory paths in the script according to your local setup.
-
-Ensure NLTK stopwords are downloaded with:
+📝 ### Notes
+Make sure NLTK stopwords are downloaded:
 
 python
 Copy
 Edit
 import nltk
 nltk.download('stopwords')
-Input sequences are padded post to max document length.
+Adjust file paths based on your environment
 
-Binary labels are used (0 = negative, 1 = positive).
+The plot_model function saves a visualization of the model architecture as multichannel.png
 
-🛠️ How to Run
-Prepare your text dataset folders (positive/negative).
 
-Run preprocessing functions to generate cleaned pickle datasets.
 
-Define and train the model using the prepared datasets.
-
-Evaluate and test on new samples.
-
-📈 Model Summary Example
-markdown
-Copy
-Edit
-Model: "model"
-__________________________________________________________________________________________________
- Layer (type)                   Output Shape         Param #     Connected to
-==================================================================================================
- input_1 (InputLayer)           [(None, 1380)]       0
- embedding (Embedding)          (None, 1380, 100)    1405700
- conv1d (Conv1D)                (None, 1377, 32)     12832
- dropout (Dropout)             (None, 1377, 32)     0
- max_pooling1d (MaxPooling1D)  (None, 688, 32)      0
- flatten (Flatten)              (None, 22016)        0
- ...
-==================================================================================================
-Total params: 162,202
-Trainable params: 162,202
-Non-trainable params: 0
-__________________________________________________________________________________________________
-🙌 Contributions
-Feel free to fork, modify, and improve this project!
-
-📫 Contact
-For questions or suggestions, please reach out.
